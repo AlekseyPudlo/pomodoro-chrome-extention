@@ -2,7 +2,6 @@ const TimerState = {
   IDLE: 'idle',
   RUNNING: 'running',
   PAUSED: 'paused',
-  COMPLETED: 'completed',
 };
 
 const SessionType = {
@@ -21,6 +20,18 @@ let timerState = TimerState.IDLE;
 let sessionType = DEFAULT_SESSION_TYPE;
 let currentSessionDuration = DEFAULT_POMODORO_DURATION;
 let remainingTime = 0;
+
+// State Management
+chrome.storage.local.get(
+  ['timerState', 'sessionType', 'currentSessionDuration', 'remainingTime'],
+  (result) => {
+    timerState = result.timerState || TimerState.IDLE;
+    sessionType = result.sessionType || DEFAULT_SESSION_TYPE;
+    currentSessionDuration =
+      result.currentSessionDuration || DEFAULT_POMODORO_DURATION;
+    remainingTime = result.remainingTime || 0;
+  }
+);
 
 // Listen for installation
 chrome.runtime.onInstalled.addListener(() => {
