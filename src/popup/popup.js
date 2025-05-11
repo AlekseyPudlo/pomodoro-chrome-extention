@@ -34,26 +34,15 @@ class PomodoroTimer {
   }
 
   start() {
-    if (!this.isRunning) {
-      this.isRunning = true;
-      this.timerId = setInterval(() => this.tick(), 1000);
-    }
+    return chrome.runtime.sendMessage({ action: 'startTimer' });
   }
 
   pause() {
-    if (this.isRunning) {
-      this.isRunning = false;
-      clearInterval(this.timerId);
-    }
+    return chrome.runtime.sendMessage({ action: 'pauseTimer' });
   }
 
   reset() {
-    this.pause();
-    this.minutes = parseInt(
-      document.querySelector('.mode.active').dataset.minutes
-    );
-    this.seconds = 0;
-    this.updateDisplay();
+    return chrome.runtime.sendMessage({ action: 'resetTimer' });
   }
 
   tick() {
